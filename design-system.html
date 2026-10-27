@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forma — Design System</title>
+  <link rel="icon" href="assets/overview/assets/forma-ai.aura.build/favicon.ico">
+  <link rel="stylesheet" href="assets/forma-ds.css">
+  <style>
+    /* Catalog Shell Overrides */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .catalog-header {
+      height: 86px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(17, 17, 16, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+    }
+    .catalog-header .nav-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: none;
+    }
+    .catalog-header .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      margin-left: 70px;
+    }
+    .catalog-header .nav-links a {
+      font-size: 13px;
+      color: #b4b2aa;
+      text-decoration: none;
+      transition: color .2s;
+      padding: 6px 0;
+      position: relative;
+      font-weight: 500;
+    }
+    .catalog-header .nav-links a:hover {
+      color: #fff;
+    }
+    .catalog-header .nav-links a.active {
+      color: var(--copper);
+    }
+    .catalog-header .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--copper);
+      border-radius: 2px;
+    }
+    .badge-ds {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      color: var(--copper);
+      background: rgba(232, 171, 126, 0.08);
+    }
+
+    /* Views */
+    #overview-view {
+      position: fixed;
+      top: 86px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 86px);
+      background: var(--bg);
+      display: block;
+    }
+    #overview-view iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    #components-view {
+      display: none;
+      padding-top: 86px;
+      min-height: 100vh;
+      background: var(--bg);
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(88, 53, 27, 0.25), transparent 70%),
+        linear-gradient(90deg, transparent calc(50% - .5px), rgba(255, 255, 255, 0.02) 50%, transparent calc(50% + .5px));
+    }
+    .catalog-layout {
+      display: flex;
+      width: 100%;
+      min-height: calc(100vh - 86px);
+    }
+    .ds-sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 86px;
+      height: calc(100vh - 86px);
+      overflow-y: auto;
+      padding: 36px 28px;
+      border-right: 1px solid var(--line);
+      background: rgba(17, 17, 16, 0.6);
+      backdrop-filter: blur(12px);
+    }
+    .ds-sidebar h4 {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 16px;
+      font-weight: 600;
+    }
+    .ds-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ds-sidebar a {
+      font-size: 12px;
+      color: #9c9a92;
+      text-decoration: none;
+      transition: color .2s, transform .2s;
+      display: block;
+    }
+    .ds-sidebar a:hover {
+      color: var(--copper);
+      transform: translateX(3px);
+    }
+
+    .ds-main {
+      flex: 1;
+      padding: 44px 60px 140px;
+      max-width: 1100px;
+    }
+    .ds-group {
+      margin-bottom: 72px;
+      scroll-margin-top: 110px;
+    }
+    .ds-group-title {
+      font-size: 26px;
+      font-family: var(--serif);
+      font-weight: 400;
+      color: var(--ink);
+      margin: 0 0 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .ds-group-title span {
+      font-size: 11px;
+      font-family: var(--font);
+      color: var(--copper);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .ds-group-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 32px;
+      line-height: 1.6;
+    }
+
+    /* Meta badge */
+    .ds-meta {
+      font-family: ui-monospace, monospace;
+      font-size: 10px;
+      color: var(--copper);
+      background: rgba(232, 171, 126, 0.09);
+      border: 1px solid rgba(232, 171, 126, 0.22);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* Typography Table */
+    .ds-type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 180px;
+      align-items: center;
+      gap: 28px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .ds-type-meta {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .ds-type-meta b {
+      display: block;
+      color: var(--ink);
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+    .ds-type-size {
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* Colors Grid */
+    .ds-color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .ds-color-card {
+      background: #171715;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      padding: 12px;
+    }
+    .ds-swatch {
+      height: 70px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 12px;
+    }
+    .ds-color-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .ds-color-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .ds-color-val {
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .ds-color-use {
+      font-size: 10px;
+      color: #74736e;
+      margin-top: 2px;
+    }
+
+    /* Backgrounds Specimens */
+    .ds-bg-specimen {
+      height: 200px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Icons Grid */
+    .ds-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 16px;
+    }
+    .ds-icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      transition: border-color .2s, background .2s;
+    }
+    .ds-icon-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--copper);
+    }
+    .ds-icon-item svg {
+      width: 24px;
+      height: 24px;
+      color: var(--copper);
+      margin-bottom: 10px;
+    }
+    .ds-icon-id {
+      font-family: ui-monospace, monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* Component Specimen Layout */
+    .ds-specimen-wrap {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .ds-specimen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .ds-specimen-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .ds-specimen-body {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs>
+<symbol id="logo" viewBox="0 0 30 30"><path fill="currentColor" d="M3 4h26L22 11H3zm0 10h19l-7 7H3zm0 10h11l-5 5H3z"></path></symbol>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+<symbol id="diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+<symbol id="spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z" fill="none" stroke="currentColor" stroke-width="1.3"></path></symbol>
+<symbol id="grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor"></rect><rect x="14" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor"></rect><rect x="4" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor"></rect><rect x="14" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor"></rect></symbol>
+<symbol id="code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 21" stroke="currentColor" fill="none" stroke-width="1.2" stroke-linejoin="round"></path></symbol>
+<symbol id="desktop" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"></rect><path d="M8 20h8m-4-3v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></symbol>
+<symbol id="phone" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.2"></rect><circle cx="12" cy="17.5" r="1" fill="currentColor"></circle></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+<symbol id="download" viewBox="0 0 24 24"><path d="M12 4v12m-5-5 5 5 5-5M4 19h16" stroke="currentColor" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+<symbol id="bag" viewBox="0 0 24 24"><path d="M6 8h12l1 12H5Zm4 0V6a2 2 0 0 1 4 0v2" stroke="currentColor" fill="none" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+<symbol id="cursor" viewBox="0 0 24 24"><path d="m5 4 7 16 2.5-6.5L21 11Z" fill="currentColor"></path></symbol>
+</defs></svg>
+
+  <header class="catalog-header">
+    <div class="nav-inner wrap">
+      <a href="#overview" class="brand" aria-label="Forma home">
+        <svg aria-hidden="true"><use href="#logo"></use></svg>forma
+      </a>
+      <nav class="nav-links" id="navigation" aria-label="Catalog navigation">
+        <a href="#overview" class="catalog-tab active" id="tab-overview">Overview</a>
+        <a href="#components" class="catalog-tab" id="tab-components">Components</a>
+      </nav>
+      <div class="nav-end">
+        <span class="badge-ds">Design System</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- OVERVIEW VIEW -->
+  <main id="overview-view">
+    <iframe id="overview-frame" src="assets/overview/index.html" title="Forma Design System Overview"></iframe>
+  </main>
+
+  <!-- COMPONENTS VIEW -->
+  <div id="components-view">
+    <div class="catalog-layout">
+      <!-- SIDEBAR -->
+      <aside class="ds-sidebar">
+        <h4>Foundations</h4>
+        <ul>
+          <li><a href="#typography">Typography</a></li>
+          <li><a href="#colors">Colors &amp; States</a></li>
+          <li><a href="#backgrounds">Backgrounds</a></li>
+          <li><a href="#surfaces">Surfaces</a></li>
+          <li><a href="#icons">Icons</a></li>
+        </ul>
+        <h4>Components</h4>
+        <ul>
+          <li><a href="#actions">Actions &amp; Buttons</a></li>
+          <li><a href="#inputs-forms">Inputs &amp; Forms</a></li>
+          <li><a href="#cards">Cards &amp; Containers</a></li>
+          <li><a href="#nav-specimens">Navigation</a></li>
+          <li><a href="#disclosure-status">Disclosure &amp; Status</a></li>
+        </ul>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="ds-main">
+        <!-- TYPOGRAPHY -->
+        <section class="ds-group" id="typography">
+          <h2 class="ds-group-title">Typography <span>Foundations</span></h2>
+          <p class="ds-group-desc">Hierarquia tipográfica combinando a elegância editorial da Instrument Serif com a legibilidade da DM Sans.</p>
+
+          <div class="ds-type-row">
+            <div class="ds-type-meta"><b>Heading 1 (Hero)</b>Instrument Serif / 400</div>
+            <div>
+              <h1 class="hero" style="min-height:auto;padding:0;overflow:visible;margin:0;"><span class="line" style="display:inline-block"><span>Forma Design <em>System</em></span></span></h1>
+            </div>
+            <div class="ds-type-size">clamp(62px, 7.7vw, 110px)</div>
+          </div>
+
+          <div class="ds-type-row">
+            <div class="ds-type-meta"><b>Heading 2 (Section)</b>Instrument Serif / 400</div>
+            <div>
+              <h2 style="font-size:clamp(38px,4.4vw,64px);line-height:1.03;letter-spacing:-.05em;font-weight:400;margin:0;">Great things start <em>with space.</em></h2>
+            </div>
+            <div class="ds-type-size">clamp(38px, 4.4vw, 64px)</div>
+          </div>
+
+          <div class="ds-type-row">
+            <div class="ds-type-meta"><b>Heading 3 (Card)</b>DM Sans / 400</div>
+            <div>
+              <h3 style="font-size:17px;font-weight:400;letter-spacing:-.3px;margin:0;">Start with a spark</h3>
+            </div>
+            <div class="ds-type-size">17px</div>
+          </div>
+
+          <div class="ds-type-row">
+            <div class="ds-type-meta"><b>Body Regular</b>DM Sans / 400</div>
+            <div>
+              <p style="font-size:14px;color:var(--muted);line-height:1.7;margin:0;">A dark aesthetic shaped with warm copper accents and delicate serif typography.</p>
+            </div>
+            <div class="ds-type-size">14px</div>
+          </div>
+
+          <div class="ds-type-row">
+            <div class="ds-type-meta"><b>Eyebrow / Label</b>DM Sans / 600 uppercase</div>
+            <div>
+              <div class="eyebrow" style="margin:0;">DESIGN SYSTEM FOUNDATIONS</div>
+            </div>
+            <div class="ds-type-size">10px | letter-spacing 0.18em</div>
+          </div>
+
+          <div class="ds-type-row">
+            <div class="ds-type-meta"><b>Meta &amp; Technical</b>ui-monospace / 400</div>
+            <div>
+              <span style="font-family:ui-monospace, monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#8d897f;">01 / FIELD OF POSSIBILITY • 0%</span>
+            </div>
+            <div class="ds-type-size">9px</div>
+          </div>
+        </section>
+
+        <!-- COLORS -->
+        <section class="ds-group" id="colors">
+          <h2 class="ds-group-title">Colors &amp; States <span>Foundations</span></h2>
+          <p class="ds-group-desc">Paleta de alto contraste e tom quente sobre fundo escuro absoluto.</p>
+
+          <h3 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin:24px 0 12px;">Brand &amp; Accent</h3>
+          <div class="ds-color-grid">
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:#e8ab7e;"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Copper Primary</span>
+                <span class="ds-color-val">#e8ab7e (--copper)</span>
+                <span class="ds-color-use">Destaque primário, acentos e links ativos</span>
+              </div>
+            </div>
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:linear-gradient(135deg, #f2c49f, #d88e56);"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Copper Gradient</span>
+                <span class="ds-color-val">#f2c49f → #d88e56</span>
+                <span class="ds-color-use">Botões pill copper de alta ênfase</span>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin:28px 0 12px;">Surfaces</h3>
+          <div class="ds-color-grid">
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:#111110;"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Base Canvas</span>
+                <span class="ds-color-val">#111110 (--bg)</span>
+                <span class="ds-color-use">Fundo principal de toda a página</span>
+              </div>
+            </div>
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:#191918;"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Panel Surface</span>
+                <span class="ds-color-val">#191918 (--panel)</span>
+                <span class="ds-color-use">Superfície de cartões secundários</span>
+              </div>
+            </div>
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:#171715;"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Card Surface</span>
+                <span class="ds-color-val">#171715</span>
+                <span class="ds-color-use">Cards de preços e componentes</span>
+              </div>
+            </div>
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:linear-gradient(135deg, #282520e6, #191a18ed);"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Glass Composer</span>
+                <span class="ds-color-val">#282520e6 / blur</span>
+                <span class="ds-color-use">Container flutuante do prompt</span>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin:28px 0 12px;">Text &amp; Icons</h3>
+          <div class="ds-color-grid">
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:#f2f0e9;"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Ink Primary</span>
+                <span class="ds-color-val">#f2f0e9 (--ink)</span>
+                <span class="ds-color-use">Texto principal, títulos e elementos ativos</span>
+              </div>
+            </div>
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:#96948d;"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Muted</span>
+                <span class="ds-color-val">#96948d (--muted)</span>
+                <span class="ds-color-use">Parágrafos de suporte e subtítulos</span>
+              </div>
+            </div>
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:#74736e;"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Dimmed Meta</span>
+                <span class="ds-color-val">#74736e</span>
+                <span class="ds-color-use">Legendas técnicas e notas discretas</span>
+              </div>
+            </div>
+            <div class="ds-color-card">
+              <div class="ds-swatch" style="background:rgba(244, 236, 222, .13);"></div>
+              <div class="ds-color-info">
+                <span class="ds-color-name">Subtle Line</span>
+                <span class="ds-color-val">rgba(244, 236, 222, .13) (--line)</span>
+                <span class="ds-color-use">Divisores e bordas estruturais</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BACKGROUNDS -->
+        <section class="ds-group" id="backgrounds">
+          <h2 class="ds-group-title">Backgrounds <span>Foundations</span></h2>
+          <p class="ds-group-desc">Efeitos atmosféricos e ambientais que definem a atmosfera espacial do site.</p>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Ambient Hero Radial &amp; Grid</span>
+              <span class="ds-meta">.hero:before + .hero-grid</span>
+            </div>
+            <div class="ds-bg-specimen" style="background:#111110;background-image:radial-gradient(ellipse at 50% 51%, #58351b40, transparent 65%), linear-gradient(90deg, transparent calc(50% - .5px), rgba(255,255,255,0.06) 50%, transparent calc(50% + .5px));">
+              <div class="eyebrow">Ambient Warmth &amp; Perspective</div>
+            </div>
+          </div>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Concentric Halo Glow</span>
+              <span class="ds-meta">.final-cta:before</span>
+            </div>
+            <div class="ds-bg-specimen" style="background:#111110;">
+              <div style="width:160px;height:160px;border-radius:50%;border:1px solid #d6aa7925;box-shadow:0 0 0 20px #d6aa790a, 0 0 0 40px #d6aa7906;background:radial-gradient(ellipse, #ba864335, transparent 70%);display:grid;place-items:center;">
+                <svg style="width:20px;height:20px;color:var(--copper);"><use href="#spark"></use></svg>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SURFACES -->
+        <section class="ds-group" id="surfaces">
+          <h2 class="ds-group-title">Surfaces <span>Foundations</span></h2>
+          <p class="ds-group-desc">Superfícies táteis e conteineres de conteúdo.</p>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Glassmorphic Container</span>
+              <span class="ds-meta">.composer</span>
+            </div>
+            <div style="background:linear-gradient(135deg, #282520e6, #191a18ed);border:1px solid #b6a18d4d;border-radius:17px;padding:20px;box-shadow:0 10px 80px #0008;backdrop-filter:blur(24px);max-width:500px;">
+              <span style="font-size:12px;color:var(--muted)">Superfície com desfoque de fundo e borda metálica fina</span>
+            </div>
+          </div>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Featured Metallic Card</span>
+              <span class="ds-meta">.price-card.featured</span>
+            </div>
+            <div style="background:linear-gradient(145deg, #2e2921, #1c1b17 75%);border:1px solid #d4af7e80;border-radius:11px;padding:24px;position:relative;max-width:400px;">
+              <div style="position:absolute;top:-1px;left:20%;width:60%;height:1px;background:linear-gradient(90deg, transparent, #ffe2b7, transparent);box-shadow:0 0 25px #f8cb7955;"></div>
+              <h4 style="margin:0 0 6px;color:var(--ink);font-weight:400;">Featured Plan Surface</h4>
+              <p style="margin:0;font-size:11px;color:var(--muted)">Gradiente suave com iluminação superior dourada</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ICONS -->
+        <section class="ds-group" id="icons">
+          <h2 class="ds-group-title">Icons <span>Foundations</span></h2>
+          <p class="ds-group-desc">Biblioteca de glifos e símbolos vetoriais integrados.</p>
+
+          <div class="ds-icon-grid">
+            <div class="ds-icon-item"><svg><use href="#logo"></use></svg><span class="ds-icon-id">#logo</span></div>
+            <div class="ds-icon-item"><svg><use href="#arrow"></use></svg><span class="ds-icon-id">#arrow</span></div>
+            <div class="ds-icon-item"><svg><use href="#diagonal"></use></svg><span class="ds-icon-id">#diagonal</span></div>
+            <div class="ds-icon-item"><svg><use href="#spark"></use></svg><span class="ds-icon-id">#spark</span></div>
+            <div class="ds-icon-item"><svg><use href="#grid"></use></svg><span class="ds-icon-id">#grid</span></div>
+            <div class="ds-icon-item"><svg><use href="#code"></use></svg><span class="ds-icon-id">#code</span></div>
+            <div class="ds-icon-item"><svg><use href="#desktop"></use></svg><span class="ds-icon-id">#desktop</span></div>
+            <div class="ds-icon-item"><svg><use href="#phone"></use></svg><span class="ds-icon-id">#phone</span></div>
+            <div class="ds-icon-item"><svg><use href="#check"></use></svg><span class="ds-icon-id">#check</span></div>
+            <div class="ds-icon-item"><svg><use href="#download"></use></svg><span class="ds-icon-id">#download</span></div>
+            <div class="ds-icon-item"><svg><use href="#bag"></use></svg><span class="ds-icon-id">#bag</span></div>
+            <div class="ds-icon-item"><svg><use href="#cursor"></use></svg><span class="ds-icon-id">#cursor</span></div>
+          </div>
+        </section>
+
+        <!-- ACTIONS & BUTTONS -->
+        <section class="ds-group" id="actions">
+          <h2 class="ds-group-title">Actions &amp; Buttons <span>Components</span></h2>
+          <p class="ds-group-desc">Pills interativas, botões de ação e emblemas de anúncio.</p>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Pill Button Variants</span>
+              <span class="ds-meta">.pill, .pill.light, .pill.copper</span>
+            </div>
+            <div class="ds-specimen-body">
+              <button class="pill">Default Pill <svg class="arrow" aria-hidden="true"><use href="#diagonal"></use></svg></button>
+              <button class="pill light">Light Pill <svg class="arrow" aria-hidden="true"><use href="#diagonal"></use></svg></button>
+              <button class="pill copper">Copper CTA <svg class="arrow" aria-hidden="true"><use href="#arrow"></use></svg></button>
+            </div>
+          </div>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Announcement Pill</span>
+              <span class="ds-meta">.announcement</span>
+            </div>
+            <div class="ds-specimen-body">
+              <a href="#overview" class="announcement" style="text-decoration:none;">
+                <span>FORMA / DS</span> Design System Overview <svg aria-hidden="true"><use href="#arrow"></use></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- INPUTS & FORMS -->
+        <section class="ds-group" id="inputs-forms">
+          <h2 class="ds-group-title">Inputs &amp; Forms <span>Components</span></h2>
+          <p class="ds-group-desc">Campos de inserção e seletores de estilo.</p>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Composer Widget</span>
+              <span class="ds-meta">.composer</span>
+            </div>
+            <div class="composer" style="margin:0;max-width:540px;">
+              <textarea placeholder="Describe the design style you want to explore..." rows="2"></textarea>
+              <div class="composer-bottom">
+                <div class="composer-options">
+                  <span class="composer-mark"><svg aria-hidden="true"><use href="#spark"></use></svg></span>
+                  <select aria-label="Design style">
+                    <option>Editorial style</option>
+                    <option>Minimal style</option>
+                    <option>Bold style</option>
+                  </select>
+                </div>
+                <button type="button" class="pill copper build-button">Make it real <svg class="arrow" aria-hidden="true"><use href="#arrow"></use></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Suggestion Chips</span>
+              <span class="ds-meta">.prompt-ideas button</span>
+            </div>
+            <div class="prompt-ideas" style="margin:0;justify-content:flex-start;">
+              <button type="button"><svg aria-hidden="true"><use href="#grid"></use></svg>A design portfolio</button>
+              <button type="button"><svg aria-hidden="true"><use href="#spark"></use></svg>A startup idea</button>
+              <button type="button"><svg aria-hidden="true"><use href="#bag"></use></svg>An online store</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- CARDS & CONTAINERS -->
+        <section class="ds-group" id="cards">
+          <h2 class="ds-group-title">Cards &amp; Containers <span>Components</span></h2>
+          <p class="ds-group-desc">Cards estruturais de preços e recursos.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px;">
+            <div class="price-card">
+              <div class="plan-heading">
+                <h3>Curious</h3>
+              </div>
+              <div class="plan-description">A small place to start.</div>
+              <div class="price"><strong>$0</strong><span>/ forever</span></div>
+              <div class="billing-note">Free for experimenters</div>
+              <button class="pill" style="width:100%;margin-top:20px;">Get started</button>
+              <ul>
+                <li>3 projects included</li>
+                <li>Full HTML export</li>
+                <li>Community templates</li>
+              </ul>
+            </div>
+
+            <div class="price-card featured">
+              <div class="plan-heading">
+                <h3>Creator</h3>
+                <span class="popular">POPULAR</span>
+              </div>
+              <div class="plan-description">For ideas that cannot wait.</div>
+              <div class="price"><sup>$</sup><strong>19</strong><span>/ month</span></div>
+              <div class="billing-note">Billed annually</div>
+              <button class="pill copper" style="width:100%;margin-top:20px;">Start with Creator</button>
+              <ul>
+                <li>Unlimited projects</li>
+                <li>Custom typography</li>
+                <li>Priority exports</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- NAVIGATION -->
+        <section class="ds-group" id="nav-specimens">
+          <h2 class="ds-group-title">Navigation <span>Components</span></h2>
+          <p class="ds-group-desc">Filtros de catálogo e alternadores de estado.</p>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Gallery Filter Toolbar</span>
+              <span class="ds-meta">.filters button</span>
+            </div>
+            <div class="filters">
+              <button type="button" aria-pressed="true">All directions</button>
+              <button type="button">Editorial</button>
+              <button type="button">Minimal</button>
+              <button type="button">Experimental</button>
+            </div>
+          </div>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Billing Toggle</span>
+              <span class="ds-meta">.billing button</span>
+            </div>
+            <div class="billing" style="display:inline-flex;">
+              <button type="button" aria-pressed="true">Monthly</button>
+              <button type="button">Annual <span>save 20%</span></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- DISCLOSURE & STATUS -->
+        <section class="ds-group" id="disclosure-status">
+          <h2 class="ds-group-title">Disclosure &amp; Status <span>Components</span></h2>
+          <p class="ds-group-desc">Acordeões e indicadores de status.</p>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Accordion Item</span>
+              <span class="ds-meta">details.faq</span>
+            </div>
+            <div class="faq" style="padding:0;border:none;">
+              <details open style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+                <summary>How does the Forma design system maintain visual fidelity?</summary>
+                <p>By reusing authentic styles, tokens, and font definitions extracted directly from the validated runtime experience.</p>
+              </details>
+            </div>
+          </div>
+
+          <div class="ds-specimen-wrap">
+            <div class="ds-specimen-header">
+              <span class="ds-specimen-title">Status Badges</span>
+              <span class="ds-meta">.check-circle, .preview-badge</span>
+            </div>
+            <div class="ds-specimen-body">
+              <div class="check-circle" style="margin:0;"><svg viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg></div>
+              <div class="preview-badge" style="position:static;opacity:1;transform:none;">PREVIEW READY</div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tabOverview = document.getElementById('tab-overview');
+      const tabComponents = document.getElementById('tab-components');
+      const overviewView = document.getElementById('overview-view');
+      const componentsView = document.getElementById('components-view');
+
+      function syncRoute() {
+        const hash = window.location.hash || '#overview';
+        if (hash.startsWith('#components') || hash.startsWith('#typography') || hash.startsWith('#colors') || hash.startsWith('#backgrounds') || hash.startsWith('#surfaces') || hash.startsWith('#icons') || hash.startsWith('#actions') || hash.startsWith('#inputs-forms') || hash.startsWith('#cards') || hash.startsWith('#nav-specimens') || hash.startsWith('#disclosure-status')) {
+          tabOverview.classList.remove('active');
+          tabComponents.classList.add('active');
+          overviewView.style.display = 'none';
+          componentsView.style.display = 'block';
+
+          // Scroll to sub-anchor if present
+          if (hash !== '#components') {
+            const el = document.querySelector(hash);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        } else {
+          tabOverview.classList.add('active');
+          tabComponents.classList.remove('active');
+          overviewView.style.display = 'block';
+          componentsView.style.display = 'none';
+        }
+      }
+
+      window.addEventListener('hashchange', syncRoute);
+      syncRoute();
+    })();
+  </script>
+</body>
+</html>

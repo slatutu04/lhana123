@@ -1,0 +1,159 @@
+{
+ "entryUrl": "https://forma-ai.aura.build/",
+ "capturedAt": "2026-10-27T14:58:22+00:00",
+ "indexHtml": {
+  "kind": "arquivo",
+  "description": "site vivo aberto com duplo clique (file://): um runtime faz o papel do Service Worker; imagens e vídeos que a página só exibe são lidos de assets/, o resto (CSS, JS, fontes, dados, imagens de WebGL) vai embutido no index.html"
+ },
+ "files": [
+  {
+   "url": "https://forma-ai.aura.build/favicon.ico",
+   "file": "assets/forma-ai.aura.build/favicon.ico",
+   "type": "image/vnd.microsoft.icon",
+   "resourceType": "other",
+   "size": 696,
+   "status": 200,
+   "party": "first",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://forma-ai.aura.build/",
+   "file": "assets/forma-ai.aura.build/index.html",
+   "type": "text/html",
+   "resourceType": "document",
+   "size": 179339,
+   "status": 200,
+   "party": "first",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://cdn.tailwindcss.com/3.4.17",
+   "file": "assets/cdn.tailwindcss.com/3.4.17.js",
+   "type": "text/javascript",
+   "resourceType": "script",
+   "size": 407279,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ],
+   "library": {
+    "name": "tailwindcss (Play CDN)",
+    "version": "3.4.17"
+   },
+   "role": "library"
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/02492f8b-7adb-43b2-a2cb-76a363a96e9b_original.webp",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/02492f8b-7adb-43b2-a2cb-76a363a96e9b_original.webp",
+   "type": "image/webp",
+   "resourceType": "image",
+   "size": 1357562,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/0ac8c74a-0445-4e7d-8019-05aea6b48be1_original.svg",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/0ac8c74a-0445-4e7d-8019-05aea6b48be1_original.svg",
+   "type": "image/svg+xml",
+   "resourceType": "other",
+   "size": 201,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2679f19c-4b74-4baf-9eb2-a2ce1e25eee8_original.webp",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2679f19c-4b74-4baf-9eb2-a2ce1e25eee8_original.webp",
+   "type": "image/webp",
+   "resourceType": "image",
+   "size": 1124134,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/3fe1d391-f45f-48c4-8ad8-3b71e7692d25_original.webp",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/3fe1d391-f45f-48c4-8ad8-3b71e7692d25_original.webp",
+   "type": "image/webp",
+   "resourceType": "image",
+   "size": 1181184,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/ff4d5663-4220-45c9-bd9c-fd2e56fc418e_original.webp",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/ff4d5663-4220-45c9-bd9c-fd2e56fc418e_original.webp",
+   "type": "image/webp",
+   "resourceType": "image",
+   "size": 1512162,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/1adcec91-12b1-4bdf-9a07-052c2e23d844/dm-sans-regular.woff2",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/1adcec91-12b1-4bdf-9a07-052c2e23d844/dm-sans-regular.woff2",
+   "type": "font/woff2",
+   "resourceType": "font",
+   "size": 21808,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/67cb7fc4-2779-4b30-a5b5-a6e04e9e0fac/instrument-serif-italic.woff2",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/67cb7fc4-2779-4b30-a5b5-a6e04e9e0fac/instrument-serif-italic.woff2",
+   "type": "font/woff2",
+   "resourceType": "font",
+   "size": 28912,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/84e54c4e-0fa3-4c34-9da6-9266e6b58b4b/dm-sans-variable.woff2",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/84e54c4e-0fa3-4c34-9da6-9266e6b58b4b/dm-sans-variable.woff2",
+   "type": "font/woff2",
+   "resourceType": "font",
+   "size": 21832,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/89422a4c-6a58-4b3a-9e2d-8dd33f0c9b4a/instrument-serif-regular.woff2",
+   "file": "assets/hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/user-files/2e815afb-cac1-4c01-90e1-cf3810246e35/89422a4c-6a58-4b3a-9e2d-8dd33f0c9b4a/instrument-serif-regular.woff2",
+   "type": "font/woff2",
+   "resourceType": "font",
+   "size": 27660,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  }
+ ]
+}
